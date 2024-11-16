@@ -6,21 +6,17 @@ resource "aws_instance" "terradici_instance" {
   ami           = var.ami_id
   instance_type = var.instance_type
 
+  key_name = var.key_name # Add key pair for SSH access
+
+  vpc_security_group_ids = [aws_security_group.terradici_sg.id] # Associate with the security group
+  subnet_id              = var.subnet_id # Use the provided subnet
+
   tags = {
     Name = "terradici"
   }
-
-  # Example for adding a key pair
-  key_name = var.key_name
-
-  # Optional security group
-  vpc_security_group_ids = [aws_security_group.terradici_sg.id]
-
-  # Optional subnet
-  subnet_id = var.subnet_id
 }
 
-# Security Group for the EC2 instance
+# Define the Security Group for the EC2 instance
 resource "aws_security_group" "terradici_sg" {
   name        = "terradici-sg"
   description = "Allow SSH and HTTP access"
@@ -29,7 +25,7 @@ resource "aws_security_group" "terradici_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] # Allow SSH from anywhere
+    cidr_blocks = ["0.0.0.0/0"] # Allow SSH from anywhere (adjust for production)
   }
 
   ingress {
