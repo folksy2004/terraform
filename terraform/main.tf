@@ -3,8 +3,8 @@ provider "aws" {
 }
 
 resource "aws_instance" "terradici_instance" {
-  ami           = var.ami_id
-  instance_type = var.instance_type
+  ami           = ami-0ebfd941bbafe70c6
+  type = string
 
   key_name = var.key_name # Add key pair for SSH access
 
